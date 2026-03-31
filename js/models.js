@@ -7,13 +7,15 @@ import { getProviderInfo, formatModelName, showToast } from './utils.js';
 // ── State ──
 let allModels = [];
 let filteredModels = [];
-let activeModel = 'claude-3-7-sonnet';
+let activeModel = 'claude-4-6-sonnet';
 let isDropdownOpen = false;
 
 // Popular models to show at the top
 const POPULAR_MODELS = [
   'gpt-4o',
   'gpt-4o-mini',
+  'claude-4-6-sonnet',
+  'claude-4-7-sonnet',
   'claude-3-7-sonnet',
   'claude-3-5-sonnet',
   'gemini-2.5-flash',

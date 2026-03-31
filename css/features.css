@@ -378,7 +378,7 @@
 /* ── Export Menu ── */
 .export-menu {
   position: absolute;
-  bottom: calc(100% + var(--space-2));
+  top: calc(100% + var(--space-2));
   right: 0;
   background: var(--bg-elevated);
   border: 1px solid var(--border-default);
