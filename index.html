@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="PolyChat — A premium multi-model AI chat app. Chat with GPT, Claude, Gemini, and 500+ models from a single beautiful interface.">
+  <meta name="theme-color" content="#07070d">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="PolyChat — Multi-Model AI Chat">
+  <meta property="og:description" content="Chat with GPT, Claude, Gemini, and 500+ AI models from one sleek interface. No API keys needed.">
+  <meta property="og:type" content="website">
+
+  <title>PolyChat — Multi-Model AI Chat</title>
+
+  <!-- Favicon -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/animations.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/sidebar.css">
+  <link rel="stylesheet" href="css/chat.css">
+  <link rel="stylesheet" href="css/components.css">
+
+  <!-- Puter.js -->
+  <script src="https://js.puter.com/v2/"></script>
+</head>
+<body>
+  <div class="app" id="app">
+
+    <!-- ═══════════════════════════════════════ -->
+    <!-- SIDEBAR                                 -->
+    <!-- ═══════════════════════════════════════ -->
+    <aside class="sidebar" id="sidebar">
+
+      <!-- Logo -->
+      <div class="sidebar__header">
+        <div class="sidebar__logo">
+          <div class="sidebar__logo-icon">⚡</div>
+          <span class="sidebar__logo-text">PolyChat</span>
+        </div>
+        <button class="sidebar__close" id="sidebar-close" aria-label="Close sidebar">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+
+      <!-- New Chat -->
+      <button class="new-chat-btn" id="new-chat-btn">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        New Chat
+      </button>
+
+      <!-- Model Switcher -->
+      <div class="sidebar__section">
+        <div class="sidebar__section-title">Model</div>
+        <div class="model-switcher" id="model-switcher">
+          <button class="model-switcher__trigger" id="model-trigger">
+            <div class="model-switcher__trigger-left">
+              <div class="model-switcher__provider-icon provider-anthropic" id="model-provider-icon">A</div>
+              <span class="model-switcher__model-name" id="model-name">claude-3-7-sonnet</span>
+            </div>
+            <svg class="model-switcher__chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+
+          <!-- Dropdown -->
+          <div class="model-dropdown" id="model-dropdown">
+            <div class="model-dropdown__search">
+              <input type="text" id="model-search" placeholder="Search models..." autocomplete="off">
+            </div>
+            <div class="model-dropdown__list" id="model-list">
+              <!-- Populated by JS -->
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Task Tags -->
+      <div class="sidebar__section">
+        <div class="sidebar__section-title" style="display: flex; align-items: center; justify-content: space-between;">
+          Task
+          <button class="task-config-btn tooltip" id="task-config-btn" data-tooltip="Configure mappings" aria-label="Configure task mappings">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+          </button>
+        </div>
+        <div class="task-tags">
+          <button class="task-tag" data-task="coding">
+            <span class="tag-icon">🧑‍💻</span>
+            <span>Coding</span>
+          </button>
+          <button class="task-tag" data-task="creative">
+            <span class="tag-icon">✨</span>
+            <span>Creative</span>
+          </button>
+          <button class="task-tag" data-task="vision">
+            <span class="tag-icon">👁️</span>
+            <span>Vision</span>
+          </button>
+          <button class="task-tag" data-task="general">
+            <span class="tag-icon">💬</span>
+            <span>General</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <div class="sidebar__footer">
+        <a class="sidebar__footer-link" href="https://github.com/kultzuki" target="_blank" rel="noopener">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+          <span>GitHub</span>
+        </a>
+        <div class="sidebar__footer-link" style="cursor: default; margin-top: var(--space-1);">
+          <span style="font-size: var(--text-xs); color: var(--text-muted);">Powered by Puter.js</span>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Sidebar Overlay (mobile) -->
+    <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+    <!-- ═══════════════════════════════════════ -->
+    <!-- MAIN CHAT AREA                          -->
+    <!-- ═══════════════════════════════════════ -->
+    <main class="main">
+
+      <!-- Top Bar -->
+      <header class="topbar">
+        <div class="topbar__left">
+          <button class="menu-toggle" id="menu-toggle" aria-label="Open menu">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+          </button>
+          <div class="topbar__model-badge">
+            <div class="dot"></div>
+            <span id="topbar-model-name" class="model-name-full">claude-3-7-sonnet</span>
+          </div>
+        </div>
+        <div class="topbar__right">
+          <button class="btn btn--icon tooltip" data-tooltip="New Chat (Ctrl+N)" id="topbar-new-chat" aria-label="New chat" onclick="document.getElementById('new-chat-btn').click()">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          </button>
+        </div>
+      </header>
+
+      <!-- Chat Container -->
+      <div class="chat-container" id="chat-container">
+
+        <!-- Welcome Screen -->
+        <div class="welcome" id="welcome">
+          <div class="welcome__icon gradient-animate">⚡</div>
+          <h1 class="welcome__title">Welcome to PolyChat</h1>
+          <p class="welcome__subtitle">Chat with GPT, Claude, Gemini, and 500+ AI models from a single interface. Pick a model, tag your task, and start chatting.</p>
+          <div class="welcome__suggestions">
+            <button class="welcome__suggestion" data-prompt="Explain how async/await works in JavaScript with practical examples.">
+              <span class="welcome__suggestion-icon">🧑‍💻</span>
+              <div>
+                <div class="welcome__suggestion-text">Explain async/await</div>
+                <div class="welcome__suggestion-desc">JavaScript concepts made simple</div>
+              </div>
+            </button>
+            <button class="welcome__suggestion" data-prompt="Write a creative short story about an AI that discovers it can dream.">
+              <span class="welcome__suggestion-icon">✨</span>
+              <div>
+                <div class="welcome__suggestion-text">Write a short story</div>
+                <div class="welcome__suggestion-desc">An AI that learns to dream</div>
+              </div>
+            </button>
+            <button class="welcome__suggestion" data-prompt="Compare React, Vue, and Svelte — give me pros, cons, and when to use each.">
+              <span class="welcome__suggestion-icon">⚖️</span>
+              <div>
+                <div class="welcome__suggestion-text">Compare frameworks</div>
+                <div class="welcome__suggestion-desc">React vs Vue vs Svelte</div>
+              </div>
+            </button>
+            <button class="welcome__suggestion" data-prompt="Explain quantum computing in simple terms, as if I'm a high school student.">
+              <span class="welcome__suggestion-icon">🧒</span>
+              <div>
+                <div class="welcome__suggestion-text">Explain quantum computing</div>
+                <div class="welcome__suggestion-desc">Made simple for beginners</div>
+              </div>
+            </button>
+          </div>
+        </div>
+
+        <!-- Messages -->
+        <div class="chat-messages" id="chat-messages">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+
+      <!-- Input Area -->
+      <div class="input-area">
+        <div class="input-wrapper">
+          <!-- Templates Bar -->
+          <div class="templates-bar" id="templates-bar">
+            <!-- Populated by JS -->
+          </div>
+          <!-- Input Box -->
+          <div class="input-box" id="input-box">
+            <textarea
+              id="chat-input"
+              placeholder="Message PolyChat..."
+              rows="1"
+              aria-label="Chat message input"
+            ></textarea>
+            <button class="send-btn" id="send-btn" aria-label="Send message">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+            </button>
+            <button class="stop-btn" id="stop-btn" aria-label="Stop generation">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="6" width="12" height="12" rx="2"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- ═══════════════════════════════════════ -->
+  <!-- TASK MAPPING CONFIG MODAL               -->
+  <!-- ═══════════════════════════════════════ -->
+  <div class="modal-overlay" id="config-modal-overlay">
+    <div class="modal">
+      <div class="modal__header">
+        <h2 class="modal__title">Task → Model Mapping</h2>
+        <button class="modal__close" id="config-close-btn" aria-label="Close">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div class="modal__body" id="config-modal-body">
+        <!-- Populated by JS -->
+      </div>
+      <div class="modal__footer">
+        <button class="btn btn--ghost btn--sm" id="config-reset-btn">Reset Defaults</button>
+        <button class="btn btn--primary btn--sm" id="config-save-btn">Save Changes</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Container -->
+  <div class="toast-container" id="toast-container"></div>
+
+  <!-- App Script -->
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>

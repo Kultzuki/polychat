@@ -1,0 +1,124 @@
+/* ============================================
+   PolyChat Design Tokens
+   ============================================ */
+
+:root {
+  /* ── Background & Surface ── */
+  --bg-primary: #07070d;
+  --bg-secondary: #0e0e18;
+  --bg-surface: #141422;
+  --bg-elevated: #1a1a2e;
+  --bg-hover: #22223a;
+  --bg-input: #12121f;
+  --bg-overlay: rgba(7, 7, 13, 0.85);
+
+  /* ── Accent Colors ── */
+  --accent-primary: #7c3aed;
+  --accent-secondary: #3b82f6;
+  --accent-gradient: linear-gradient(135deg, #7c3aed 0%, #3b82f6 100%);
+  --accent-gradient-hover: linear-gradient(135deg, #8b5cf6 0%, #60a5fa 100%);
+  --accent-glow: 0 0 20px rgba(124, 58, 237, 0.3), 0 0 40px rgba(59, 130, 246, 0.15);
+
+  /* ── Task Tag Colors ── */
+  --tag-coding: #22d3ee;
+  --tag-coding-bg: rgba(34, 211, 238, 0.1);
+  --tag-coding-glow: 0 0 12px rgba(34, 211, 238, 0.25);
+
+  --tag-creative: #f472b6;
+  --tag-creative-bg: rgba(244, 114, 182, 0.1);
+  --tag-creative-glow: 0 0 12px rgba(244, 114, 182, 0.25);
+
+  --tag-vision: #a78bfa;
+  --tag-vision-bg: rgba(167, 139, 250, 0.1);
+  --tag-vision-glow: 0 0 12px rgba(167, 139, 250, 0.25);
+
+  --tag-general: #34d399;
+  --tag-general-bg: rgba(52, 211, 153, 0.1);
+  --tag-general-glow: 0 0 12px rgba(52, 211, 153, 0.25);
+
+  /* ── Text Colors ── */
+  --text-primary: #f0f0f5;
+  --text-secondary: #9ca3af;
+  --text-muted: #6b7280;
+  --text-inverse: #07070d;
+
+  /* ── Border Colors ── */
+  --border-subtle: rgba(255, 255, 255, 0.06);
+  --border-default: rgba(255, 255, 255, 0.1);
+  --border-focus: rgba(124, 58, 237, 0.5);
+
+  /* ── Typography ── */
+  --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', monospace;
+
+  --text-xs: 0.75rem;     /* 12px */
+  --text-sm: 0.8125rem;   /* 13px */
+  --text-base: 0.875rem;  /* 14px */
+  --text-md: 0.9375rem;   /* 15px */
+  --text-lg: 1.125rem;    /* 18px */
+  --text-xl: 1.5rem;      /* 24px */
+  --text-2xl: 2rem;       /* 32px */
+  --text-3xl: 2.5rem;     /* 40px */
+
+  --font-normal: 400;
+  --font-medium: 500;
+  --font-semibold: 600;
+  --font-bold: 700;
+
+  --leading-tight: 1.25;
+  --leading-normal: 1.5;
+  --leading-relaxed: 1.75;
+
+  /* ── Spacing Scale (4px base) ── */
+  --space-0: 0;
+  --space-1: 0.25rem;   /* 4px */
+  --space-2: 0.5rem;    /* 8px */
+  --space-3: 0.75rem;   /* 12px */
+  --space-4: 1rem;      /* 16px */
+  --space-5: 1.25rem;   /* 20px */
+  --space-6: 1.5rem;    /* 24px */
+  --space-7: 1.75rem;   /* 28px */
+  --space-8: 2rem;      /* 32px */
+  --space-10: 2.5rem;   /* 40px */
+  --space-12: 3rem;     /* 48px */
+  --space-16: 4rem;     /* 64px */
+
+  /* ── Border Radius ── */
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-2xl: 20px;
+  --radius-bubble: 20px;
+  --radius-full: 9999px;
+
+  /* ── Shadows ── */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.5);
+  --shadow-xl: 0 12px 40px rgba(0, 0, 0, 0.6);
+
+  /* ── Glass Effect ── */
+  --glass-bg: rgba(20, 20, 34, 0.7);
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --glass-blur: blur(20px);
+
+  /* ── Transitions ── */
+  --transition-fast: 150ms ease;
+  --transition-base: 200ms ease;
+  --transition-slow: 300ms ease;
+  --transition-spring: 300ms cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  /* ── Z-Index Scale ── */
+  --z-base: 1;
+  --z-dropdown: 100;
+  --z-sidebar: 200;
+  --z-overlay: 300;
+  --z-modal: 400;
+  --z-toast: 500;
+
+  /* ── Layout ── */
+  --sidebar-width: 280px;
+  --chat-max-width: 780px;
+  --input-max-height: 200px;
+}
