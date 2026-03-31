@@ -90,16 +90,21 @@
 }
 
 .message--user .message__bubble {
-  background: var(--accent-gradient);
-  color: white;
-  border-bottom-right-radius: var(--radius-sm);
+  background: var(--bg-hover);
+  color: var(--text-primary);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  /* The Neon Architect rule: no heavy borders */
 }
 
 .message--ai .message__bubble {
-  background: var(--bg-surface);
-  border: 1px solid var(--border-subtle);
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border-left: 2px solid var(--tag-creative); /* Accent bar */
   color: var(--text-primary);
-  border-bottom-left-radius: var(--radius-sm);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
 }
 
 /* ── Message Actions ── */
@@ -279,13 +284,11 @@
 }
 
 .welcome__title {
-  font-size: var(--text-2xl);
+  font-family: var(--font-display);
+  font-size: var(--text-3xl);
   font-weight: var(--font-bold);
   margin-bottom: var(--space-3);
-  background: var(--accent-gradient);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: var(--text-primary);
 }
 
 .welcome__subtitle {

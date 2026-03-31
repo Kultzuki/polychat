@@ -3,52 +3,53 @@
    ============================================ */
 
 :root {
-  /* ── Background & Surface ── */
-  --bg-primary: #07070d;
-  --bg-secondary: #0e0e18;
-  --bg-surface: #141422;
-  --bg-elevated: #1a1a2e;
-  --bg-hover: #22223a;
-  --bg-input: #12121f;
-  --bg-overlay: rgba(7, 7, 13, 0.85);
+  /* ── Background & Surface (Tonal Stacking) ── */
+  --bg-primary: #0b1326;          /* background (infinite canvas) */
+  --bg-secondary: #0b1326;        /* Keep same to avoid hard lines */
+  --bg-surface: #131b2e;          /* surface_container_low (sidebar) */
+  --bg-elevated: #171f33;         /* surface_container (panes, chats) */
+  --bg-hover: #222a3d;            /* surface_container_high */
+  --bg-input: transparent;        /* inputs are glass/bottom-border only */
+  --bg-overlay: rgba(11, 19, 38, 0.85);
 
-  /* ── Accent Colors ── */
-  --accent-primary: #7c3aed;
-  --accent-secondary: #3b82f6;
-  --accent-gradient: linear-gradient(135deg, #7c3aed 0%, #3b82f6 100%);
-  --accent-gradient-hover: linear-gradient(135deg, #8b5cf6 0%, #60a5fa 100%);
-  --accent-glow: 0 0 20px rgba(124, 58, 237, 0.3), 0 0 40px rgba(59, 130, 246, 0.15);
+  /* ── Accent Colors (Neon Architect) ── */
+  --accent-primary: #ddb7ff;
+  --accent-secondary: #5de6ff;
+  --accent-gradient: linear-gradient(135deg, #ddb7ff 0%, #b76dff 100%);
+  --accent-gradient-hover: linear-gradient(135deg, #f0dbff 0%, #ddb7ff 100%);
+  --accent-glow: 0 0 20px rgba(221, 183, 255, 0.3), 0 0 40px rgba(93, 230, 255, 0.15);
 
   /* ── Task Tag Colors ── */
-  --tag-coding: #22d3ee;
-  --tag-coding-bg: rgba(34, 211, 238, 0.1);
-  --tag-coding-glow: 0 0 12px rgba(34, 211, 238, 0.25);
+  --tag-coding: #5de6ff;
+  --tag-coding-bg: rgba(93, 230, 255, 0.1);
+  --tag-coding-glow: 0 0 12px rgba(93, 230, 255, 0.25);
 
-  --tag-creative: #f472b6;
-  --tag-creative-bg: rgba(244, 114, 182, 0.1);
-  --tag-creative-glow: 0 0 12px rgba(244, 114, 182, 0.25);
+  --tag-creative: #ffafd3;
+  --tag-creative-bg: rgba(255, 175, 211, 0.1);
+  --tag-creative-glow: 0 0 12px rgba(255, 175, 211, 0.25);
 
-  --tag-vision: #a78bfa;
-  --tag-vision-bg: rgba(167, 139, 250, 0.1);
-  --tag-vision-glow: 0 0 12px rgba(167, 139, 250, 0.25);
+  --tag-vision: #ddb7ff;
+  --tag-vision-bg: rgba(221, 183, 255, 0.1);
+  --tag-vision-glow: 0 0 12px rgba(221, 183, 255, 0.25);
 
-  --tag-general: #34d399;
+  --tag-general: #34d399; /* kept general greenish for balance */
   --tag-general-bg: rgba(52, 211, 153, 0.1);
   --tag-general-glow: 0 0 12px rgba(52, 211, 153, 0.25);
 
   /* ── Text Colors ── */
-  --text-primary: #f0f0f5;
-  --text-secondary: #9ca3af;
-  --text-muted: #6b7280;
-  --text-inverse: #07070d;
+  --text-primary: #dae2fd;        /* on_surface */
+  --text-secondary: #cbc3d7;      /* on_surface_variant */
+  --text-muted: #958ea0;          /* outline */
+  --text-inverse: #0b1326;        /* on_primary (dark text for light bg) */
 
-  /* ── Border Colors ── */
-  --border-subtle: rgba(255, 255, 255, 0.06);
-  --border-default: rgba(255, 255, 255, 0.1);
-  --border-focus: rgba(124, 58, 237, 0.5);
+  /* ── Border Colors (The "No-Line" Rule - ultra subtle) ── */
+  --border-subtle: transparent;   /* No solid borders */
+  --border-default: rgba(73, 68, 84, 0.15); /* outline_variant @ 15% */
+  --border-focus: rgba(93, 230, 255, 0.5);  /* secondary glow */
 
   /* ── Typography ── */
   --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-display: 'Space Grotesk', 'Inter', sans-serif;
   --font-mono: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', monospace;
 
   --text-xs: 0.75rem;     /* 12px */
@@ -77,11 +78,11 @@
   --space-4: 1rem;      /* 16px */
   --space-5: 1.25rem;   /* 20px */
   --space-6: 1.5rem;    /* 24px */
-  --space-7: 1.75rem;   /* 28px */
   --space-8: 2rem;      /* 32px */
   --space-10: 2.5rem;   /* 40px */
   --space-12: 3rem;     /* 48px */
   --space-16: 4rem;     /* 64px */
+  --space-20: 5rem;     /* 80px */
 
   /* ── Border Radius ── */
   --radius-sm: 6px;
@@ -92,15 +93,15 @@
   --radius-bubble: 20px;
   --radius-full: 9999px;
 
-  /* ── Shadows ── */
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
-  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
-  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.5);
-  --shadow-xl: 0 12px 40px rgba(0, 0, 0, 0.6);
+  /* ── Shadows (Ambient Glows) ── */
+  --shadow-sm: 0 4px 12px rgba(218, 226, 253, 0.02);
+  --shadow-md: 0 12px 24px rgba(218, 226, 253, 0.04);
+  --shadow-lg: 0 16px 32px rgba(218, 226, 253, 0.06);
+  --shadow-xl: 0 24px 48px rgba(218, 226, 253, 0.08);
 
   /* ── Glass Effect ── */
-  --glass-bg: rgba(20, 20, 34, 0.7);
-  --glass-border: rgba(255, 255, 255, 0.08);
+  --glass-bg: rgba(45, 52, 73, 0.4); /* surface_variant at 40% */
+  --glass-border: rgba(218, 226, 253, 0.05); /* very subtle on_surface */
   --glass-blur: blur(20px);
 
   /* ── Transitions ── */
