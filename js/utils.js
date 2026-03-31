@@ -14,7 +14,29 @@ export function renderMarkdown(text) {
   // Code blocks (```lang\n...\n```)
   html = html.replace(/```(\w*)\n([\s\S]*?)```/g, (_, lang, code) => {
     const language = lang || 'text';
-    return `<pre><div class="code-header"><span>${language}</span><button class="copy-code-btn" onclick="window.polyChat.copyCode(this)" data-code="${encodeURIComponent(code.trim())}"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button></div><code>${code.trim()}</code></pre>`;
+    const cleanCode = code.trim();
+    const lines = cleanCode.split('\n');
+    
+    // Determine if this should be an artifact
+    const isUiCode = ['html', 'css', 'javascript', 'js', 'svg', 'react', 'vue', 'svelte'].includes(language.toLowerCase());
+    const isLongCode = lines.length > 15;
+    
+    if (isUiCode || isLongCode) {
+      const encodeCode = encodeURIComponent(cleanCode);
+      return `
+        <div class="artifact-card">
+          <div class="artifact-card__icon">📦</div>
+          <div class="artifact-card__details">
+            <div class="artifact-card__title">Code Artifact</div>
+            <div class="artifact-card__lang">${language} — ${lines.length} lines</div>
+          </div>
+          <button class="btn btn--primary btn--sm" onclick="window.polyChat.openArtifact(this)" data-code="${encodeCode}" data-lang="${language}">Open</button>
+        </div>
+      `;
+    }
+
+    // Standard code block format
+    return `<pre><div class="code-header"><span>${language}</span><button class="copy-code-btn" onclick="window.polyChat.copyCode(this)" data-code="${encodeURIComponent(cleanCode)}"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button></div><code>${cleanCode}</code></pre>`;
   });
 
   // Inline code

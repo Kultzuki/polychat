@@ -34,6 +34,7 @@
   <link rel="stylesheet" href="css/chat.css">
   <link rel="stylesheet" href="css/components.css">
   <link rel="stylesheet" href="css/features.css">
+  <link rel="stylesheet" href="css/artifacts.css">
 
   <!-- Puter.js -->
   <script src="https://js.puter.com/v2/"></script>
@@ -252,6 +253,11 @@
           <!-- Input Toolbar -->
           <div class="input-toolbar">
             <div class="input-toolbar__left">
+              <!-- Voice Dictation (Mic) -->
+              <button class="toolbar-btn tooltip" id="mic-btn" data-tooltip="Dictate prompt" aria-label="Use microphone">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="22"/><line x1="8" y1="22" x2="16" y2="22"/></svg>
+              </button>
+
               <!-- Image Upload -->
               <button class="toolbar-btn tooltip" id="image-upload-btn" data-tooltip="Attach image" aria-label="Upload image">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
@@ -279,6 +285,40 @@
         </div>
       </div>
     </main>
+
+    <!-- ═══════════════════════════════════════ -->
+    <!-- ARTIFACTS PANE                          -->
+    <!-- ═══════════════════════════════════════ -->
+    <aside class="artifacts-pane" id="artifacts-pane">
+      <header class="artifacts__header">
+        <div class="artifacts__title">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+          Artifact Viewer
+        </div>
+        <button class="artifacts__close" id="artifacts-close-btn" aria-label="Close artifact">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="13 17 18 12 13 7"/><polyline points="6 17 11 12 6 7"/></svg>
+        </button>
+      </header>
+
+      <div class="artifacts__tabs">
+        <button class="artifact-tab active" id="tab-artifact-code">Code</button>
+        <button class="artifact-tab" id="tab-artifact-preview">Preview (HTML/Web)</button>
+      </div>
+
+      <div class="artifacts__body">
+        <!-- Code View -->
+        <div class="artifacts__view artifacts__view--code active" id="view-artifact-code">
+          <pre><code id="artifact-code-block" class="hljs"></code></pre>
+        </div>
+
+        <!-- Preview View -->
+        <div class="artifacts__view artifacts__view--preview" id="view-artifact-preview">
+          <div class="artifacts__iframe-wrapper">
+            <iframe id="artifact-preview-iframe" sandbox="allow-scripts" title="Artifact Preview"></iframe>
+          </div>
+        </div>
+      </div>
+    </aside>
   </div>
 
   <!-- ═══════════════════════════════════════ -->

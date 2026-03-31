@@ -49,6 +49,72 @@ export function initChat() {
 
   updateSendButton();
 
+  // ── Voice Dictation ──
+  const micBtn = document.getElementById('mic-btn');
+  let recognition = null;
+  if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+    const SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
+    recognition = new SpeechRec();
+    recognition.continuous = true;
+    recognition.interimResults = true;
+
+    recognition.onstart = () => {
+      micBtn.style.color = '#ef4444'; // Red recording indication
+      micBtn.style.animation = 'pulse 1.5s infinite';
+    };
+
+    let finalTranscript = '';
+    recognition.onresult = (e) => {
+      let interim = '';
+      for (let i = e.resultIndex; i < e.results.length; ++i) {
+        if (e.results[i].isFinal) finalTranscript += e.results[i][0].transcript;
+        else interim += e.results[i][0].transcript;
+      }
+      chatInput.value = finalTranscript + interim;
+      autoResize(chatInput);
+      updateSendButton();
+    };
+
+    recognition.onend = () => {
+      micBtn.style.color = '';
+      micBtn.style.animation = '';
+    };
+
+    let isRecording = false;
+    micBtn?.addEventListener('click', () => {
+      if (isRecording) {
+        recognition.stop();
+        isRecording = false;
+      } else {
+        finalTranscript = chatInput.value ? chatInput.value + ' ' : '';
+        try { recognition.start(); } catch(e) {}
+        isRecording = true;
+      }
+    });
+  } else if (micBtn) {
+    micBtn.style.display = 'none';
+  }
+
+  // ── Artifacts Pane Events ──
+  const artifactsPane = document.getElementById('artifacts-pane');
+  document.getElementById('artifacts-close-btn')?.addEventListener('click', () => {
+    artifactsPane?.classList.remove('open');
+  });
+
+  const tabCodeBtn = document.getElementById('tab-artifact-code');
+  const tabPreviewBtn = document.getElementById('tab-artifact-preview');
+  const viewCode = document.getElementById('view-artifact-code');
+  const viewPreview = document.getElementById('view-artifact-preview');
+
+  tabCodeBtn?.addEventListener('click', () => {
+    tabCodeBtn.classList.add('active'); tabPreviewBtn.classList.remove('active');
+    viewCode.classList.add('active'); viewPreview.classList.remove('active');
+  });
+  tabPreviewBtn?.addEventListener('click', () => {
+    tabPreviewBtn.classList.add('active'); tabCodeBtn.classList.remove('active');
+    viewPreview.classList.add('active'); viewCode.classList.remove('active');
+  });
+
   // Export menu
   const exportBtn = document.getElementById('export-btn');
   const exportMenu = document.getElementById('export-menu');
@@ -79,6 +145,34 @@ export function initChat() {
     const originalText = btn.innerHTML;
     btn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> Copied!`;
     setTimeout(() => { btn.innerHTML = originalText; }, 2000);
+  };
+  window.polyChat.openArtifact = (btn) => {
+    const code = decodeURIComponent(btn.dataset.code);
+    const lang = btn.dataset.lang?.toLowerCase();
+    
+    // Open Pane
+    const pane = document.getElementById('artifacts-pane');
+    if (pane) pane.classList.add('open');
+    
+    // Set code block
+    const codeBlock = document.getElementById('artifact-code-block');
+    if (codeBlock) {
+      codeBlock.className = `hljs language-${lang}`;
+      codeBlock.textContent = code;
+      if (window.hljs) window.hljs.highlightElement(codeBlock);
+    }
+    
+    // Set iframe preview
+    const iframe = document.getElementById('artifact-preview-iframe');
+    if (iframe) {
+      if (['html', 'svg'].includes(lang)) {
+        iframe.srcdoc = code;
+      } else if (['js', 'javascript', 'react', 'vue', 'svelte'].includes(lang)) {
+        iframe.srcdoc = `<html><body><script>${code}</script></body></html>`;
+      } else {
+        iframe.srcdoc = '<html><body style="font-family:sans-serif;padding:20px;">Preview not supported for this language.</body></html>';
+      }
+    }
   };
   window.polyChat.copyMessage = async (msgId) => {
     const m = messages.find(x => x.id === msgId);

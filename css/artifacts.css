@@ -1,0 +1,210 @@
+/* ============================================
+   PolyChat Artifacts Pane Styles
+   ============================================ */
+
+.artifacts-pane {
+  display: flex;
+  flex-direction: column;
+  width: var(--artifacts-width, 0px);
+  max-width: 50vw;
+  height: 100vh;
+  background: var(--bg-secondary);
+  border-left: 1px solid var(--border-subtle);
+  transition: width var(--transition-slow);
+  overflow: hidden;
+  flex-shrink: 0;
+  z-index: var(--z-overlay);
+}
+
+.artifacts-pane.open {
+  --artifacts-width: 500px;
+}
+
+/* Header */
+.artifacts__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-3) var(--space-4);
+  height: 56px;
+  background: var(--bg-surface);
+  border-bottom: 1px solid var(--border-subtle);
+  flex-shrink: 0;
+}
+
+.artifacts__title {
+  font-family: var(--font-display);
+  font-size: var(--text-base);
+  font-weight: var(--font-bold);
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.artifacts__close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-md);
+  color: var(--text-secondary);
+  background: transparent;
+  transition: all var(--transition-fast);
+}
+
+.artifacts__close:hover {
+  background: var(--bg-hover);
+  color: var(--text-primary);
+}
+
+/* Content Body */
+.artifacts__body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Tabs */
+.artifacts__tabs {
+  display: flex;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-4);
+  background: var(--bg-surface);
+  border-bottom: 1px solid var(--border-subtle);
+  flex-shrink: 0;
+}
+
+.artifact-tab {
+  padding: var(--space-1) var(--space-3);
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+  border-radius: var(--radius-sm);
+  transition: all var(--transition-fast);
+}
+
+.artifact-tab.active {
+  background: var(--bg-elevated);
+  color: var(--text-primary);
+  box-shadow: 0 1px 0 var(--border-focus) inset;
+}
+
+.artifact-tab:hover:not(.active) {
+  background: var(--bg-hover);
+  color: var(--text-primary);
+}
+
+/* Views */
+.artifacts__view {
+  flex: 1;
+  display: none;
+  overflow: auto;
+  background: var(--bg-primary);
+}
+
+.artifacts__view.active {
+  display: block;
+}
+
+/* Code View */
+.artifacts__view--code {
+  padding: var(--space-4);
+}
+
+.artifacts__view--code pre {
+  margin: 0;
+  border-radius: var(--radius-md);
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-subtle);
+  font-size: var(--text-sm);
+}
+
+.artifacts__view--code code {
+  display: block;
+  padding: var(--space-4);
+  font-family: var(--font-mono);
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+/* Preview View (Iframe) */
+.artifacts__view--preview {
+  padding: var(--space-4);
+  display: flex;
+  flex-direction: column;
+}
+
+.artifacts__iframe-wrapper {
+  flex: 1;
+  background: white; /* Needs white background for most UI previews to look correct */
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  border: 1px solid var(--border-subtle);
+  box-shadow: inset 0 0 10px rgba(0,0,0,0.1);
+}
+
+.artifacts__iframe-wrapper iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+  background: transparent;
+}
+
+/* ── Inline Chat Artifact Card ── */
+.artifact-card {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  margin: var(--space-3) 0;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  transition: all var(--transition-base);
+}
+
+.artifact-card:hover {
+  border-color: var(--border-focus);
+  background: var(--bg-hover);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.artifact-card__icon {
+  font-size: 24px;
+}
+
+.artifact-card__details {
+  flex: 1;
+  min-width: 0;
+}
+
+.artifact-card__title {
+  color: var(--text-primary);
+  font-weight: var(--font-semibold);
+  font-size: var(--text-sm);
+  margin-bottom: 2px;
+}
+
+.artifact-card__lang {
+  color: var(--text-muted);
+  font-size: var(--text-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .artifacts-pane.open {
+    position: fixed;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    max-width: 100vw;
+    z-index: 500;
+  }
+}
