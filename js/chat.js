@@ -5,7 +5,7 @@
 import { getActiveModel } from './models.js';
 import { getActiveTask } from './tasks.js';
 import { getSystemPrompt } from './systemPrompt.js';
-import { saveChat, getChat, getAllChats, deleteChat, generateTitle } from './storage.js';
+import { saveChat, getChat, getAllChats, deleteChat, generateTitle, summariseAndSave, buildMemoryPrompt } from './storage.js';
 import { exportAsMarkdown, exportAsJSON, estimateConversationTokens, formatTokenCount } from './export.js';
 import { copyShareableLink, loadSharedChat } from './share.js';
 import { consumePendingImage, hasPendingImage, generateImage, getCurrentTab } from './imageFeatures.js';
@@ -101,6 +101,11 @@ export function initChat() {
     showToast('Loaded shared chat', 'success');
     window.location.hash = '';
   }
+
+  // Handle unload summary
+  window.addEventListener('beforeunload', () => {
+    if (messages.length > 1) summariseAndSave(messages);
+  });
 }
 
 /**
@@ -284,10 +289,17 @@ async function sendToAI(userMessage, model, imageFile = null) {
   updateStreamingUI(true);
 
   const systemPrompt = getSystemPrompt(model);
+  const memoryPrompt = await buildMemoryPrompt();
+  
+  let finalSystemPrompt = systemPrompt || '';
+  if (memoryPrompt) {
+    finalSystemPrompt = finalSystemPrompt ? `${memoryPrompt}\n\n${finalSystemPrompt}` : memoryPrompt;
+  }
+
   const conversationHistory = [];
 
-  if (systemPrompt) {
-    conversationHistory.push({ role: 'system', content: systemPrompt });
+  if (finalSystemPrompt) {
+    conversationHistory.push({ role: 'system', content: finalSystemPrompt });
   }
 
   messages.filter(m => m.role === 'user' || m.role === 'ai').forEach(m => {
@@ -542,6 +554,10 @@ function escapeText(text) {
  * Load a specific chat from storage.
  */
 async function loadChat(chatId) {
+  if (messages && messages.length > 1) {
+    summariseAndSave(messages);
+  }
+
   try {
     const chat = await getChat(chatId);
     if (!chat) return;
@@ -575,6 +591,10 @@ async function loadChat(chatId) {
  * Start a new chat.
  */
 export function newChat() {
+  if (messages && messages.length > 1) {
+    summariseAndSave(messages);
+  }
+
   messages = [];
   currentChatId = null;
   if (chatMessages) chatMessages.innerHTML = '';
