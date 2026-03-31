@@ -7,7 +7,7 @@
   flex-direction: column;
   width: var(--artifacts-width, 0px);
   max-width: 50vw;
-  height: 100vh;
+  height: 100dvh;
   background: var(--bg-secondary);
   border-left: 1px solid var(--border-subtle);
   transition: width var(--transition-slow);
@@ -199,12 +199,18 @@
 
 /* Responsive */
 @media (max-width: 1024px) {
-  .artifacts-pane.open {
+  .artifacts-pane {
     position: fixed;
     right: 0;
     top: 0;
     bottom: 0;
-    max-width: 100vw;
+    height: 100%;
     z-index: 500;
+    transform: translateX(100%);
+  }
+  .artifacts-pane.open {
+    transform: translateX(0);
+    width: 100vw;
+    max-width: 100vw;
   }
 }

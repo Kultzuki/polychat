@@ -6,10 +6,11 @@
 .sidebar {
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  height: 100dvh;
+  width: var(--sidebar-width);
   background: var(--bg-secondary);
   border-right: 1px solid var(--border-subtle);
-  overflow: hidden;
+  flex-shrink: 0;
 }
 
 /* ── Sidebar Header ── */

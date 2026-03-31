@@ -6,7 +6,7 @@
 .app {
   display: grid;
   grid-template-columns: var(--sidebar-width) 1fr var(--artifacts-width, 0px);
-  height: 100vh;
+  height: 100dvh;
   width: 100vw;
   overflow: hidden;
 }
@@ -15,7 +15,7 @@
 .main {
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  height: 100dvh;
   overflow: hidden;
   background: var(--bg-primary);
   position: relative;
