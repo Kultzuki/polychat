@@ -3,12 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="PolyChat — A premium multi-model AI chat app. Chat with GPT, Claude, Gemini, and 500+ models from a single beautiful interface.">
+  <meta name="description" content="PolyChat — A premium multi-model AI chat app. Chat with GPT, Claude, Gemini, and 500+ models. Compare models side-by-side, generate images, and more.">
   <meta name="theme-color" content="#07070d">
 
   <!-- Open Graph -->
   <meta property="og:title" content="PolyChat — Multi-Model AI Chat">
-  <meta property="og:description" content="Chat with GPT, Claude, Gemini, and 500+ AI models from one sleek interface. No API keys needed.">
+  <meta property="og:description" content="Chat with GPT, Claude, Gemini, and 500+ AI models. Compare, generate images, export chats.">
   <meta property="og:type" content="website">
 
   <title>PolyChat — Multi-Model AI Chat</title>
@@ -21,6 +21,10 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 
+  <!-- Highlight.js for Code Tool -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+
   <!-- Styles -->
   <link rel="stylesheet" href="css/variables.css">
   <link rel="stylesheet" href="css/base.css">
@@ -29,6 +33,7 @@
   <link rel="stylesheet" href="css/sidebar.css">
   <link rel="stylesheet" href="css/chat.css">
   <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/features.css">
 
   <!-- Puter.js -->
   <script src="https://js.puter.com/v2/"></script>
@@ -69,15 +74,11 @@
             </div>
             <svg class="model-switcher__chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
           </button>
-
-          <!-- Dropdown -->
           <div class="model-dropdown" id="model-dropdown">
             <div class="model-dropdown__search">
               <input type="text" id="model-search" placeholder="Search models..." autocomplete="off">
             </div>
-            <div class="model-dropdown__list" id="model-list">
-              <!-- Populated by JS -->
-            </div>
+            <div class="model-dropdown__list" id="model-list"></div>
           </div>
         </div>
       </div>
@@ -91,27 +92,27 @@
           </button>
         </div>
         <div class="task-tags">
-          <button class="task-tag" data-task="coding">
-            <span class="tag-icon">🧑‍💻</span>
-            <span>Coding</span>
-          </button>
-          <button class="task-tag" data-task="creative">
-            <span class="tag-icon">✨</span>
-            <span>Creative</span>
-          </button>
-          <button class="task-tag" data-task="vision">
-            <span class="tag-icon">👁️</span>
-            <span>Vision</span>
-          </button>
-          <button class="task-tag" data-task="general">
-            <span class="tag-icon">💬</span>
-            <span>General</span>
-          </button>
+          <button class="task-tag" data-task="coding"><span class="tag-icon">🧑‍💻</span><span>Coding</span></button>
+          <button class="task-tag" data-task="creative"><span class="tag-icon">✨</span><span>Creative</span></button>
+          <button class="task-tag" data-task="vision"><span class="tag-icon">👁️</span><span>Vision</span></button>
+          <button class="task-tag" data-task="general"><span class="tag-icon">💬</span><span>General</span></button>
+        </div>
+      </div>
+
+      <!-- Chat History -->
+      <div class="sidebar__section" style="flex: 1; overflow: hidden; display: flex; flex-direction: column;">
+        <div class="sidebar__section-title">History</div>
+        <div class="chat-history" id="chat-history">
+          <!-- Populated by JS -->
         </div>
       </div>
 
       <!-- Footer -->
       <div class="sidebar__footer">
+        <button class="sidebar__footer-link" id="system-prompt-btn" style="cursor: pointer; background: none; border: none; width: 100%; text-align: left;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+          <span>System Prompt</span>
+        </button>
         <a class="sidebar__footer-link" href="https://github.com/kultzuki" target="_blank" rel="noopener">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
           <span>GitHub</span>
@@ -136,12 +137,37 @@
           <button class="menu-toggle" id="menu-toggle" aria-label="Open menu">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
           </button>
+
+          <!-- Tabs -->
+          <div class="tabs">
+            <button class="tab-btn active" id="tab-chat"><span class="tab-icon">💬</span> Chat</button>
+            <button class="tab-btn" id="tab-compare"><span class="tab-icon">⚔️</span> Compare</button>
+            <button class="tab-btn" id="tab-generate"><span class="tab-icon">🎨</span> Generate</button>
+          </div>
+        </div>
+        <div class="topbar__right">
           <div class="topbar__model-badge">
             <div class="dot"></div>
             <span id="topbar-model-name" class="model-name-full">claude-3-7-sonnet</span>
           </div>
-        </div>
-        <div class="topbar__right">
+          <div class="token-counter" id="token-counter" title="Estimated tokens used">
+            <div class="token-counter__dot"></div>
+            <span id="token-count">0 tokens</span>
+          </div>
+
+          <!-- Export -->
+          <div style="position: relative;">
+            <button class="btn btn--icon tooltip" id="export-btn" data-tooltip="Export / Share" aria-label="Export">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+            </button>
+            <div class="export-menu" id="export-menu">
+              <button class="export-menu__item" id="export-md"><span class="export-menu__item-icon">📄</span> Export Markdown</button>
+              <button class="export-menu__item" id="export-json"><span class="export-menu__item-icon">📋</span> Export JSON</button>
+              <div class="divider"></div>
+              <button class="export-menu__item" id="share-link"><span class="export-menu__item-icon">🔗</span> Copy Share Link</button>
+            </div>
+          </div>
+
           <button class="btn btn--icon tooltip" data-tooltip="New Chat (Ctrl+N)" id="topbar-new-chat" aria-label="New chat" onclick="document.getElementById('new-chat-btn').click()">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
           </button>
@@ -150,7 +176,6 @@
 
       <!-- Chat Container -->
       <div class="chat-container" id="chat-container">
-
         <!-- Welcome Screen -->
         <div class="welcome" id="welcome">
           <div class="welcome__icon gradient-animate">⚡</div>
@@ -189,18 +214,53 @@
         </div>
 
         <!-- Messages -->
-        <div class="chat-messages" id="chat-messages">
-          <!-- Populated by JS -->
+        <div class="chat-messages" id="chat-messages"></div>
+      </div>
+
+      <!-- Compare Container (hidden by default) -->
+      <div class="chat-container" id="compare-container" style="display: none;">
+        <div class="welcome" id="compare-welcome">
+          <div class="welcome__icon">⚔️</div>
+          <h1 class="welcome__title">Model Comparison</h1>
+          <p class="welcome__subtitle">Send the same prompt to multiple models and compare responses side-by-side. Select models below and type your prompt.</p>
         </div>
+        <div class="chat-messages" id="compare-messages"></div>
+      </div>
+
+      <!-- Generate Container (hidden by default) -->
+      <div class="chat-container" id="generate-container" style="display: none;">
+        <div class="welcome" id="generate-welcome">
+          <div class="welcome__icon">🎨</div>
+          <h1 class="welcome__title">Image Generation</h1>
+          <p class="welcome__subtitle">Describe the image you want and AI will generate it for you. Powered by DALL·E through Puter.js.</p>
+        </div>
+        <div class="chat-messages" id="generate-messages"></div>
       </div>
 
       <!-- Input Area -->
       <div class="input-area">
         <div class="input-wrapper">
-          <!-- Templates Bar -->
-          <div class="templates-bar" id="templates-bar">
-            <!-- Populated by JS -->
+          <!-- Image Preview -->
+          <div class="image-preview-area" id="image-preview-area"></div>
+
+          <!-- Templates Bar (chat mode) -->
+          <div class="templates-bar" id="templates-bar"></div>
+
+          <!-- Compare Model Selector (compare mode, hidden by default) -->
+          <div class="compare-model-selector" id="compare-model-selector" style="display: none;"></div>
+
+          <!-- Input Toolbar -->
+          <div class="input-toolbar">
+            <div class="input-toolbar__left">
+              <!-- Image Upload -->
+              <button class="toolbar-btn tooltip" id="image-upload-btn" data-tooltip="Attach image" aria-label="Upload image">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+              </button>
+              <input type="file" id="image-file-input" accept="image/*" style="display: none;">
+            </div>
+            <div class="input-toolbar__right" id="input-toolbar-right"></div>
           </div>
+
           <!-- Input Box -->
           <div class="input-box" id="input-box">
             <textarea
@@ -222,8 +282,10 @@
   </div>
 
   <!-- ═══════════════════════════════════════ -->
-  <!-- TASK MAPPING CONFIG MODAL               -->
+  <!-- MODALS                                   -->
   <!-- ═══════════════════════════════════════ -->
+
+  <!-- Task Mapping Config -->
   <div class="modal-overlay" id="config-modal-overlay">
     <div class="modal">
       <div class="modal__header">
@@ -232,12 +294,40 @@
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
         </button>
       </div>
-      <div class="modal__body" id="config-modal-body">
-        <!-- Populated by JS -->
-      </div>
+      <div class="modal__body" id="config-modal-body"></div>
       <div class="modal__footer">
         <button class="btn btn--ghost btn--sm" id="config-reset-btn">Reset Defaults</button>
         <button class="btn btn--primary btn--sm" id="config-save-btn">Save Changes</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- System Prompt Editor -->
+  <div class="modal-overlay" id="system-prompt-overlay">
+    <div class="modal" style="max-width: 560px;">
+      <div class="modal__header">
+        <h2 class="modal__title">System Prompt</h2>
+        <button class="modal__close" id="system-prompt-close" aria-label="Close">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div class="modal__body">
+        <div class="system-prompt-section">
+          <label class="system-prompt-label">Global System Prompt</label>
+          <textarea class="system-prompt-textarea" id="system-prompt-global" placeholder="Set a global system prompt that applies to all models...&#10;&#10;Example: You are a helpful assistant that always responds with well-structured, concise answers."></textarea>
+          <p style="font-size: var(--text-xs); color: var(--text-muted); margin-top: var(--space-2);">Applied to all models unless overridden below.</p>
+        </div>
+        <hr class="system-prompt-divider">
+        <div class="system-prompt-section" id="system-prompt-model-section">
+          <label class="system-prompt-label">Per-Model Override</label>
+          <select class="mapping-item__select" id="system-prompt-model-select" style="margin-bottom: var(--space-3);">
+            <option value="">Select a model...</option>
+          </select>
+          <textarea class="system-prompt-textarea" id="system-prompt-model-input" placeholder="Set a custom system prompt for the selected model..."></textarea>
+        </div>
+      </div>
+      <div class="modal__footer">
+        <button class="btn btn--primary btn--sm" id="system-prompt-save">Save Prompt</button>
       </div>
     </div>
   </div>

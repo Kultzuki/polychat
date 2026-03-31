@@ -1,11 +1,14 @@
 /* ============================================
-   PolyChat — Main Application Entry
+   PolyChat — Main Application Entry (Full)
    ============================================ */
 
-import { initModelSwitcher } from './models.js';
+import { initModelSwitcher, getAllModels, getActiveModel } from './models.js';
 import { initTaskTags } from './tasks.js';
 import { initTemplates } from './templates.js';
-import { initChat, newChat, sendProgrammatic } from './chat.js';
+import { initChat, newChat, sendProgrammatic, loadChatHistory } from './chat.js';
+import { initSystemPrompt } from './systemPrompt.js';
+import { initImageFeatures, getCurrentTab } from './imageFeatures.js';
+import { formatModelName, getProviderInfo } from './utils.js';
 
 /**
  * Initialize the entire application.
@@ -16,6 +19,12 @@ function init() {
   initTaskTags();
   initTemplates();
   initChat();
+  initSystemPrompt();
+  initImageFeatures();
+
+  // Make models accessible globally for other modules
+  window.polyChat = window.polyChat || {};
+  window.polyChat.getModels = getAllModels;
 
   // ── Sidebar Toggle (Mobile) ──
   const sidebar = document.getElementById('sidebar');
@@ -54,22 +63,113 @@ function init() {
     });
   });
 
+  // ── Tab Switching ──
+  const tabs = ['chat', 'compare', 'generate'];
+  tabs.forEach(tab => {
+    const btn = document.getElementById(`tab-${tab}`);
+    btn?.addEventListener('click', () => switchTab(tab));
+  });
+
+  // ── Compare Model Selector ──
+  setupCompareSelector();
+
+  // Listen for model list updates
+  window.addEventListener('models-loaded', setupCompareSelector);
+
   // ── Keyboard Shortcuts ──
   document.addEventListener('keydown', (e) => {
-    // Ctrl/Cmd + N: New Chat
     if ((e.ctrlKey || e.metaKey) && e.key === 'n') {
       e.preventDefault();
       newChat();
     }
-
-    // Ctrl/Cmd + /: Focus input
     if ((e.ctrlKey || e.metaKey) && e.key === '/') {
       e.preventDefault();
       document.getElementById('chat-input')?.focus();
     }
   });
 
-  console.log('🚀 PolyChat initialized');
+  // ── Input Placeholder Update on Tab Switch ──
+  window.addEventListener('tab-changed', (e) => {
+    const input = document.getElementById('chat-input');
+    if (!input) return;
+    switch (e.detail?.tab) {
+      case 'compare': input.placeholder = 'Enter prompt to compare across models...'; break;
+      case 'generate': input.placeholder = 'Describe the image you want to generate...'; break;
+      default: input.placeholder = 'Message PolyChat...';
+    }
+  });
+
+  console.log('🚀 PolyChat initialized (All Phases)');
+}
+
+/**
+ * Switch between tabs.
+ */
+function switchTab(tab) {
+  // Update tab buttons
+  document.querySelectorAll('.tab-btn').forEach(t => t.classList.remove('active'));
+  document.getElementById(`tab-${tab}`)?.classList.add('active');
+
+  // Show/hide containers
+  const containers = {
+    chat: document.getElementById('chat-container'),
+    compare: document.getElementById('compare-container'),
+    generate: document.getElementById('generate-container'),
+  };
+
+  Object.entries(containers).forEach(([key, el]) => {
+    if (el) el.style.display = key === tab ? '' : 'none';
+  });
+
+  // Show/hide templates bar (only in chat mode)
+  const templatesBar = document.getElementById('templates-bar');
+  if (templatesBar) templatesBar.style.display = tab === 'chat' ? '' : 'none';
+
+  // Show/hide compare selector
+  const compareSelector = document.getElementById('compare-model-selector');
+  if (compareSelector) compareSelector.style.display = tab === 'compare' ? 'flex' : 'none';
+
+  // Dispatch event
+  window.dispatchEvent(new CustomEvent('tab-changed', { detail: { tab } }));
+}
+
+/**
+ * Setup compare model multi-selector.
+ */
+function setupCompareSelector() {
+  const selector = document.getElementById('compare-model-selector');
+  if (!selector) return;
+
+  const COMPARE_MODELS = [
+    'gpt-4o', 'gpt-4o-mini', 'claude-3-7-sonnet', 'claude-3-5-sonnet',
+    'gemini-2.5-flash', 'gemini-2.0-flash', 'deepseek-chat', 'grok-3',
+    'llama-4-maverick',
+  ];
+
+  selector.innerHTML = `
+    <span style="font-size: var(--text-xs); color: var(--text-muted); margin-right: var(--space-1);">Models:</span>
+    ${COMPARE_MODELS.map(m => {
+      const provider = getProviderInfo(m);
+      return `
+        <button class="compare-model-chip" data-model="${m}">
+          <span class="model-dropdown__item-icon ${provider.cssClass}" style="width: 14px; height: 14px; font-size: 8px;">${provider.icon}</span>
+          <span>${formatModelName(m)}</span>
+        </button>
+      `;
+    }).join('')}
+  `;
+
+  // Pre-select first 2
+  const chips = selector.querySelectorAll('.compare-model-chip');
+  if (chips[0]) chips[0].classList.add('selected');
+  if (chips[2]) chips[2].classList.add('selected'); // claude
+
+  // Toggle selection
+  chips.forEach(chip => {
+    chip.addEventListener('click', () => {
+      chip.classList.toggle('selected');
+    });
+  });
 }
 
 // ── Boot ──
